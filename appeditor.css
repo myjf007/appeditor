@@ -12,8 +12,8 @@ em, h1, h2, h3, h4, input, li, ol, p, span, textarea, ul {
     padding: 40px 30px;
     box-sizing: border-box;
 	font-size: 20px;
-    height: 30px;
-    line-height: 30px;
+    /*height: 30px;*/
+    /*line-height: 30px;*/
     margin-bottom: 20px;
 	padding: 40px 30px;
     box-shadow: none;
@@ -38,12 +38,6 @@ em, h1, h2, h3, h4, input, li, ol, p, span, textarea, ul {
     box-sizing: inherit;
 }
 
-.cpc-diary-edit .bars-box-justify {
-    position: absolute;
-    z-index: 1001;
-    top: 50%;
-    left: 70%;
-}
 
 .cpc-diary-edit .bars-box-justify .bars-box-position {
     width: 328px;
@@ -123,10 +117,6 @@ cpc-diary-edit .editor-list {
     font-family: PingFang SC,Lantinghei SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans;
 }
 
-.cpc-diary-edit .diary-list {
-    background: #fff;
-}
-
 .cpc-diary-edit #ueditor .empty-content {
     text-align: center;
     font-size: 14px;
@@ -139,41 +129,6 @@ cpc-diary-edit .editor-list {
     position: relative;
     width: 100%;
     box-sizing: border-box;
-}
-
-.cpc-diary-edit .model-box {
-    position: relative;
-}
-
-.cpc-diary-edit .text-model-wrapper {
-    width: 100%;
-    position: relative;
-    margin-top: 0;
-}
-
-.cpc-diary-edit .model-box .moni-textarea, .cpc-diary-edit .model-box textarea {
-    width: 100%;
-    min-height: 100px;
-    resize: none;
-    font-size: 16px;
-    padding: 10px;
-    overflow: hidden;
-    border: 1px solid #ddd;
-    background: #fff;
-}
-
-.cpc-diary-edit .model-box .moni-textarea {
-    position: relative;
-    z-index: 1;
-    word-break: break-all;
-}
-
-.cpc-diary-edit .model-box textarea {
-    position: absolute;
-    height: 100%;
-    top: 0;
-    z-index: 2;
-    font-family: PingFang SC,Lantinghei SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans;
 }
 
 .cpc-diary-edit .model-box .moni-textarea, .cpc-diary-edit .model-box textarea {
@@ -308,16 +263,6 @@ cpc-diary-edit .editor-list {
     box-shadow: 0 0 12px #d5d5d5;
 }
 
-.cpc-diary-edit .model-box .moni-textarea, .cpc-diary-edit .model-box textarea {
-    width: 100%;
-    min-height: 100px;
-    resize: none;
-    font-size: 16px;
-    padding: 10px;
-    overflow: hidden;
-    border: 1px solid #ddd;
-    background: #fff;
-}
 
 .cpc-diary-edit .editor-list {
     position: relative;
@@ -341,18 +286,6 @@ cpc-diary-edit .editor-list {
     background: #fff;
 }
 
-.cpc-diary-edit .model-box .moni-textarea, .cpc-diary-edit .model-box textarea {
-    width: 100%;
-    min-height: 100px;
-    resize: none;
-    font-size: 16px;
-    padding: 10px;
-    overflow: hidden;
-    border: 1px solid #ddd;
-    background: #fff;
-}
-
-
 .cpc-diary-edit .model-box .moni-textarea {
     position: relative;
     z-index: 1;
@@ -369,19 +302,19 @@ cpc-diary-edit .editor-list {
     margin-top: 0;
 }
 
-.cpc-diary-edit .item {
-    padding: 10px 10px 0;
-    position: relative;
-    width: 100%;
-    box-sizing: border-box;
-}
-
 .cpc-diary-edit .model-box textarea {
+    margin: 0;
+    line-height: inherit;
+    resize: none;
+    outline: 0;
     position: absolute;
     height: 100%;
     top: 0;
     z-index: 2;
     font-family: PingFang SC,Lantinghei SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans;
+    margin: 0;
+    line-height: inherit;
+   
 }
 
 .cpc-diary-edit .addModulesbtn:hover {
@@ -620,11 +553,11 @@ cpc-diary-edit .editor-list {
     filter: alpha(opacity=0);
 }
 
-*, :after, :before {
-    box-sizing: inherit;
+.modal-open {
+    overflow: hidden;
 }
 
-.modal-open {
+.modal-open-1 {
     overflow: hidden;
 }
 
@@ -723,3 +656,14 @@ dl, ol, ul {
     background-position: -200px -46px
 }
 
+.cpc-diary-edit .hover,.cpc-diary-edit .model-box textarea:focus {
+    border-color: #cacaca;
+    box-shadow: 0 0 12px #d5d5d5
+}
+
+.cpc-diary-edit .edit-area-content {
+    min-height: 60px;
+    position: relative;
+    left: 22px;
+    z-index: 1111
+}
