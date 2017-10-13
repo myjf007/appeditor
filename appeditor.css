@@ -104,19 +104,6 @@ cpc-diary-edit .editor-list {
     margin-left: 110px;
 }
 
-
-.cpc-diary-edit #ueditor {
-    width: 320px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    height: 530px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    font-size: 16px;
-    padding-bottom: 10px;
-    font-family: PingFang SC,Lantinghei SC,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans;
-}
-
 .cpc-diary-edit #ueditor .empty-content {
     text-align: center;
     font-size: 14px;
