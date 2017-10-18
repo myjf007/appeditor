@@ -1,3 +1,4 @@
+/*! AppEdit v1.1.0 github https://github.com/chenbei360/appeditor */
 function AppEdit (el){
     this._init_(el);
 }
@@ -5,12 +6,12 @@ function AppEdit (el){
 AppEdit.prototype = {
     constructor : AppEdit,
     _init_ : function(info) {
-		this.barsbox = "<div class='bars-box ng-hide' class='addModulesBars'><div class=bars-box-justify style='top: auto; left: 726px;'><div class=bars-box-position><div class=bars-box-arrow></div><div class='cancleAdd' ng-click='cancleAdd()' class=cancleAdd></div><p class='bars-box-title ng-binding'>+添加模块</p><div class='select-modules-bars clear' id=select-modules-bars><ul class=add-module-box><li class='onClickAddText'><div class=add-text-btn></div>文字<li class=upload-button ng-click='onClickAddImage($event)'><input id=upImage type=file multiple><div class=add-image-btn></div>图片<!--<li ng-click='onClickAddVedio()'><div class=add-video-btn></div>视频<li class='onClickAddGoods'><div class=add-good-btn></div>商品<li class='onClickAddLine'><div class=add-line-gap-btn></div>分割线--></ul></div></div></div><div class=bars-box-back class='cancleAdd'></div></div>";
-		this.emptycontent	 = "<div class='empty-content ng-hide' ng-show='diary.length == 0&amp;&amp;!model_tips'>详情目前为空</div>";
-		this.itemstart = "<div class='click-item item ng-scope' ng-repeat='module in diary track by $index' ng-show='diary.length > 0'><div ng-switch=module.type id=module1507179294205na3cmjwug1l><div ng-switch-when=2 class='model-box ";
-		this.itemstart_append = " ng-scope' ng-class='hover[module.id]?'hover':''' ng-mousedown='closeIn($event)' ng-mouseover='hoverIndex(module.id)' ng-mouseleave='hoverIndex(-1)'>";
-		this.itemend = "<div class='note-ope ng-hide' ng-show='(hover[module.id]&amp;&amp;!move) || (opora[module.id]&amp;&amp;move)'><div class=add-btn ng-mousedown='model_insert($index,$event,module.id)'></div><div class=move-up ng-mousedown='model_move($index,$event,-1,module.id)' ng-show='$index>0'></div><div class='move-down ng-hide' ng-mousedown='model_move($index,$event,1,module.id)' ng-show='$index < diary.length-1'></div><div class=note-del ng-mousedown='model_delete($index)'></div></div></div><div class='choice-tips choice-bottom ng-hide' ng-mousedown='stopPro($event)' ng-show='$index == curInsertIndex'></div></div></div>";
-		this.barsend = "<div ng-click='model_insert(-1,$event,diary[diary.length-1].id)' class='addModulesbtn'>+添加模块</div>";
+		this.barsbox = "<div class='bars-box ng-hide' class='addModulesBars'><div class=bars-box-justify style='top: auto; left: 726px;'><div class=bars-box-position><div class=bars-box-arrow></div><div class='cancleAdd' class=cancleAdd></div><p class='bars-box-title ng-binding'>+添加模块</p><div class='select-modules-bars clear' id=select-modules-bars><ul class=add-module-box><li class='onClickAddText'><div class=add-text-btn></div>文字<li class=upload-button><form enctype='multipart/form-data' id='uploadForm' style='margin: 0em;'><input id=upImage type=file multiple></form><div class=add-image-btn></div>图片<!--<li ng-click='onClickAddVedio()'><div class=add-video-btn></div>视频<li class='onClickAddGoods'><div class=add-good-btn></div>商品<li class='onClickAddLine'><div class=add-line-gap-btn></div>分割线--></ul></div></div></div><div class=bars-box-back class='cancleAdd'></div></div>";
+		this.emptycontent	 = "<div class='empty-content ng-hide'>详情目前为空</div>";
+		this.itemstart = "<div class='click-item item ng-scope'><div><div class='model-box ";
+		this.itemstart_append = " ng-scope'>";
+		this.itemend = "<div class='note-ope ng-hide'><div class=add-btn></div><div class=move-up></div><div class='move-down ng-hide'></div><div class=note-del></div></div></div><div class='choice-tips choice-bottom ng-hide'></div></div></div>";
+		this.barsend = "<div class='addModulesbtn'>+添加模块</div>";
 
     	var id = info.el || '#editor_id';
 	    var name = info.name || 'appEdit' ;
@@ -57,11 +58,14 @@ AppEdit.prototype = {
 		
 		
 		$(self.id + ".onClickAddText").click(function() {
-			$(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent().parent('.click-item').replaceWith(self.bytext(" "))
-			
+			var current = $(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent('.click-item');
+			$(current).find('.choice-bottom').addClass('ng-hide');
+			current.after(self.bytext(" "));
 			$(self.id + ".addModulesBars").addClass('ng-hide');
 			$(self.id + '.bars-box').addClass('ng-hide');
+			$(self.id + '.bars-box').addClass('ng-hide');
 			
+
 			$("body").removeClass('modal-open');
 			self.init();
 			self.add_after();
@@ -69,21 +73,54 @@ AppEdit.prototype = {
 
 			
 		$(self.id + ".addModulesbtn").click(function() {
+			alert(1);
 			$("body").addClass('modal-open');
-			$(this).after("<div class='mark addModulesBars' ng-show='addModulesBars'></div>");
+			$(this).after("<div class='mark addModulesBars'></div>");
 			$(self.id + '.bars-box').removeClass('ng-hide');
 			$(self.id + '.empty-content').addClass('ng-hide');
 
 
-			var append = self.itemstart + " text-model-wrapper " + self.itemstart_append + "<div class='choice-tips choice-bottom' ng-mousedown='stopPro($event)' ></div>" +  self.itemend;
+			var append = self.itemstart + " text-model-wrapper " + self.itemstart_append + "<div class='choice-tips choice-bottom'  ></div>" +  self.itemend;
 			$(self.id + ".diary-list").append(append);
 
 			self.set_top(0);
 		});
-		
+
+
+		$(self.uploadbutton()).change(function(e) {
+			
+			$(self.id + '.bars-box').addClass('ng-hide');
+			$("body").removeClass('modal-open');
+			$(self.id + ".addModulesBars").addClass('ng-hide');
+
+			var current;
+			var length = this.files.length;
+			if(!current || current == undefined) {
+				current = obj = $(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent('.click-item');		
+				$(current).find('.choice-bottom').addClass('ng-hide');	
+  			}		
+			
+			for (var i = 0; i < length; i++) {
+				$(current).after(self.itemstart + " image-model-wrapper " + self.itemstart_append + "<div class='img-loading'><img src=https://s.geilicdn.com/CPC/item/201709/images/loading.50c5e3e7.gif></div>" + self.itemend);
+				self.init();
+				self.add_after();
+				current = $(current).next();
+
+				self.info.imageupload != undefined  ? self.info.imageupload(this.files[i],current) : self.showImage(this.files[i],current); 
+			}
+
+			//清空
+			$(self.uploadbutton()).val("");
+		});
+
+
 		$(self.id + ".cancleAdd").click(function() {
 			$(self.id + ".bars-box-back").mousedown();
 		});		
+
+		$(self.id + ".upload-button").click(function() {
+			document.getElementById("upImage").click();
+		});
 
 		$(self.id + ".model-box").hover(function() {
 			$(this).addClass('hover');
@@ -133,7 +170,7 @@ AppEdit.prototype = {
 		});
 		
 		$(self.id + ".bars-box-back").mousedown(function() {
-			$(".click-item .choice-bottom:not(.ng-hide)").parent().parent().parent('.click-item').remove()
+			$(".click-item .choice-bottom:not(.ng-hide)").addClass('ng-hide');
 			$(".addModulesBars").addClass('ng-hide');
 			$('.bars-box').addClass('ng-hide');
 			
@@ -156,14 +193,14 @@ AppEdit.prototype = {
 		$(self.id + ".add-btn").mousedown(function() {
 			var current = $(this).parent().parent().parent().parent('.click-item');
 			$("body").addClass('modal-open');
-			$(this).after("<div class='mark addModulesBars' ng-show='addModulesBars'></div>");
+			$(this).after("<div class='mark addModulesBars'></div>");
 			$('.bars-box').removeClass('ng-hide');
 			$('.empty-content').addClass('ng-hide');
 
+			$(current).find('.choice-tips').removeClass('ng-hide');
 			
-
-			var append = self.itemstart + " text-model-wrapper " + self.itemstart_append + "<div class='choice-tips choice-bottom' ng-mousedown='stopPro($event)' ></div>" +  self.itemend;
-			$(current).after(append);
+			//var append = self.itemstart + " text-model-wrapper " + self.itemstart_append + "<div class='choice-tips choice-bottom'  ></div>" +  self.itemend;
+			//$(current).after(append);
 
 			self.set_top(current);
 		});
@@ -172,13 +209,19 @@ AppEdit.prototype = {
 
 		$(id + '#ueditor').hover(function(e) {
 			self.unScroll();
-			//$('body').addClass("modal-open-1");
 		},function(e){
 			self.removeUnScroll();
-			//$('body').removeClass("modal-open-1");	
 		});
 
 		if(data.length <= 0) {$(self.id + '.empty-content').removeClass('ng-hide');}	
+    },
+    showImage : function(file,current) {
+    	var self = this;
+		var reader = new FileReader();  
+        reader.readAsDataURL(file);
+    	reader.onload = function(e){
+    		self.uploadafter(e.target.result,current);  
+		}
     },
     unScroll : function() {
         var top = $(document).scrollTop();
@@ -191,15 +234,15 @@ AppEdit.prototype = {
     },
 	byimage : function($val) {
 		var hidden = "<input name='" + this.name + "[][image]" + "' value='" + $val + "' type='hidden'/>";
-		if(this.info.debug == undefined || this.info.debug == true)
-			console.log(hidden);
-		return this.itemstart + " image-model-wrapper " + this.itemstart_append + "<div class='img-loading ng-hide' ng-show='diary[$index].loading'><img src=https://s.geilicdn.com/CPC/item/201709/images/loading.50c5e3e7.gif></div>" + "<img ng-src='https://si.geilicdn.com/bj-pc_diary-900906851-1507182255641-1819123877_222_222.jpg?w=222&amp;h=222' onerror='imgOnError(this)' ondragstart='return false' src='" + $val + "'>" + hidden+ this.itemend;
+		
+		this.log(hidden);
+		return this.itemstart + " image-model-wrapper " + this.itemstart_append + "<div class='img-loading ng-hide'><img src=https://s.geilicdn.com/CPC/item/201709/images/loading.50c5e3e7.gif></div>" + "<img ng-src='https://si.geilicdn.com/bj-pc_diary-900906851-1507182255641-1819123877_222_222.jpg?w=222&amp;h=222' onerror='imgOnError(this)' ondragstart='return false' src='" + $val + "'>" + hidden+ this.itemend;
 	},
 	bytext : function($val) {
 		var hidden = "<input name='" + this.name + "[][text]" + "' value='" + $val + "' type='hidden'/>";
-		if(this.info.debug != undefined || this.info.debug == true)
-			console.log(hidden);
-		return this.itemstart + " text-model-wrapper " + this.itemstart_append +  "<div class='moni-textarea ng-binding' data-id=0 ng-bind-html='htmlDecode(module.text)'>" + $val + '</div>' + "<textarea id='textareaNumber0' class='textarea ng-pristine ng-valid ng-not-empty ng-touched' ng-class='txt-show-area' ng-blur='noEdit($index)' ng-mousedown='stopPro($event)' ng-model='module.text'>" + $val + "</textarea>" + hidden + this.itemend;
+		
+		this.log(hidden);
+		return this.itemstart + " text-model-wrapper " + this.itemstart_append +  "<div class='moni-textarea ng-binding'>" + $val + '</div>' + "<textarea id='textareaNumber0' class='textarea ng-pristine ng-valid ng-not-empty ng-touched' >" + $val + "</textarea>" + hidden + this.itemend;
 	},
 	textafter : function() {
 		$(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent().parent('.click-item').replaceWith(this.bytext($val))
@@ -211,21 +254,15 @@ AppEdit.prototype = {
 		this.init();
 		this.add_after();
 	},
-	uploadafter : function($val) {
+	uploadafter : function($val,current) {
 		var self = this;
-		$(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent().parent('.click-item').replaceWith(this.byimage($val))
-
-		$(self.id + ".addModulesBars").addClass('ng-hide');
-		$(self.id + '.bars-box').addClass('ng-hide');
-		$("body").removeClass('modal-open');
-
+		$(current).removeClass('ng-hide');
+		$(current).replaceWith(self.byimage($val));
 		this.init();
-		this.add_after();
-
-
+		this.add_after();	
 	},
 	uploadbutton : function(obj) {
-		return $(this.id + ".add-image-btn")
+		return $(this.id + "#upImage")
 	},
 	init : function() {
 	 	var self = this;
@@ -249,8 +286,7 @@ AppEdit.prototype = {
 		
 		$(self.id + ".note-del").mousedown(function() {
 			if(self.info.del != undefined) {
-				if(self.info.del())
-				  $(this).parent().parent().parent().parent('.click-item').remove();
+				self.info.del();
 			} else if(confirm("是否删除该模块")) 
 				$(this).parent().parent().parent().parent('.click-item').remove();
 			
@@ -262,36 +298,24 @@ AppEdit.prototype = {
 		
 	},
 	set_top : function(current) {
-
 		var self = this;
-		var has = 1;
+		var has = 0;
 		if(current) {
 			var top = 0;
 			$(self.id + ".click-item").each(function() {
-				top += $(this).height() 
+				top += $(this).outerHeight();
 				has++;
 				if($(this).is(current)) {
 				   return false;	
 				}
 			});
-			top += 30;
-		} else {
-			var top = $(self.id + ".diary-list").height() - 100;	
+		} 
+		if($(self.id + ".click-item").length == has) 
 			$("#ueditor").animate({scrollTop: top}, 0);
-		}
-		
-		if(top >= $("#ueditor")[0].offsetHeight) {
 
-			if($(self.id + ".click-item").length == has) {
-				var scrollTop = $("#ueditor").scrollTop() + $(".click-item .choice-bottom:not(.ng-hide)").parent().parent().parent('.click-item').height() + 20;
-				$("#ueditor").animate({scrollTop: scrollTop}, 0);
-			}			
-			top = top - $("#ueditor").scrollTop() + 30;
-		} else {
-			$("#ueditor").animate({scrollTop: 0}, 0);
-		}
-
-		$(self.id + ".bars-box-justify").attr('style',"top: " + top + "px;left: " + ($("#ueditor").offset().left + $("#ueditor").width()) + "px;");
+		top = top - $("#ueditor").scrollTop();
+		top -= 60;
+		$(self.id + ".bars-box-justify").attr('style',"top: " + top + "px;left: " + ($("#ueditor").offset().left + $("#ueditor").outerWidth() + 21) + "px;");
 	},		
 	add_after : function() {
 		var self = this;
@@ -338,14 +362,14 @@ AppEdit.prototype = {
 			var current = $(this).parent().parent().parent().parent('.click-item');
 			
 			$("body").addClass('modal-open');
-			$(this).after("<div class='mark addModulesBars' ng-show='addModulesBars'></div>");
+			$(this).after("<div class='mark addModulesBars'></div>");
 			$(self.id + '.bars-box').removeClass('ng-hide');
 			$(self.id + '.empty-content').addClass('ng-hide');
 			
 			
-
-			var append = self.itemstart + " text-model-wrapper " + self.itemstart_append + "<div class='choice-tips choice-bottom' ng-mousedown='stopPro($event)' ></div>" +  self.itemend;
-			$(current).after(append);
+			$(current).find('.choice-tips').removeClass('ng-hide');
+			//var append = self.itemstart + " text-model-wrapper " + self.itemstart_append + "<div class='choice-tips choice-bottom'  ></div>" +  self.itemend;
+			//$(current).after(append);
 				
 			self.add_after();
 		
@@ -368,5 +392,50 @@ AppEdit.prototype = {
 			self.add_after();	
 		});
 		
+	},
+	log : function(data) {
+		if(this.info.debug == true) 
+		{
+			console.log(data);
+		}
+	},
+	/********************
+	 * 取窗口滚动条高度 
+	 ******************/
+	getScrollTop : function ()
+	{
+	    var scrollTop=0;
+	    if(document.documentElement&&document.documentElement.scrollTop)
+	    {
+	        scrollTop=document.documentElement.scrollTop;
+	    }
+	    else if(document.body)
+	    {
+	        scrollTop=document.body.scrollTop;
+	    }
+	    return scrollTop;
+ 	},
+	/********************
+	 * 取窗口可视范围的高度 
+	 *******************/
+	getClientHeight : function ()
+	{
+	    var clientHeight=0;
+	    if(document.body.clientHeight&&document.documentElement.clientHeight)
+	    {
+	        var clientHeight = (document.body.clientHeight<document.documentElement.clientHeight)?document.body.clientHeight:document.documentElement.clientHeight;        
+	    }
+	    else
+	    {
+	        var clientHeight = (document.body.clientHeight>document.documentElement.clientHeight)?document.body.clientHeight:document.documentElement.clientHeight;    
+	    }
+	    return clientHeight;
+	},
+	/********************
+	 * 取文档内容实际高度 
+	 *******************/
+	getScrollHeight : function()
+	{
+	    return Math.max(document.body.scrollHeight,document.documentElement.scrollHeight);
 	}
 }
