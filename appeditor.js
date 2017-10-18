@@ -73,17 +73,19 @@ AppEdit.prototype = {
 
 			
 		$(self.id + ".addModulesbtn").click(function() {
-			alert(1);
 			$("body").addClass('modal-open');
 			$(this).after("<div class='mark addModulesBars'></div>");
 			$(self.id + '.bars-box').removeClass('ng-hide');
 			$(self.id + '.empty-content').addClass('ng-hide');
 
+			var append = self.itemstart + " text-model-wrapper " + self.itemstart_append +  self.itemend;
 
-			var append = self.itemstart + " text-model-wrapper " + self.itemstart_append + "<div class='choice-tips choice-bottom'  ></div>" +  self.itemend;
-			$(self.id + ".diary-list").append(append);
+			$(self.id + ".diary-list").prepend(append);
+			$(self.id + ".diary-list .click-item").first().find('.choice-bottom').removeClass("ng-hide");
+			var current = $(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent('.click-item');
 
-			self.set_top(0);
+			$("#ueditor").animate({scrollTop: 0}, 0);
+			self.set_top(current);
 		});
 
 
@@ -96,7 +98,7 @@ AppEdit.prototype = {
 			var current;
 			var length = this.files.length;
 			if(!current || current == undefined) {
-				current = obj = $(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent('.click-item');		
+				current = obj = $(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent('.click-item');	
 				$(current).find('.choice-bottom').addClass('ng-hide');	
   			}		
 			
