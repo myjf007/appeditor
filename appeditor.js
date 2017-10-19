@@ -59,13 +59,19 @@ AppEdit.prototype = {
 		
 		$(self.id + ".onClickAddText").click(function() {
 			var current = $(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent('.click-item');
-			$(current).find('.choice-bottom').addClass('ng-hide');
-			current.after(self.bytext(" "));
+			
+
+			if(  $(self.id + ".choice-tips:not(.ng-hide)").is($(self.id + ".choice-tips").eq(0)) && !$(self.id + ".choice-tips").eq(0).parent().find('textarea').length && !$(self.id + ".choice-tips").eq(0).parent().find('img').length ) {
+				current.replaceWith(self.bytext(" "));
+			} else {
+				current.after(self.bytext(" "));
+			}
+			
 			$(self.id + ".addModulesBars").addClass('ng-hide');
 			$(self.id + '.bars-box').addClass('ng-hide');
 			$(self.id + '.bars-box').addClass('ng-hide');
 			
-
+			$(current).find('.choice-bottom').addClass('ng-hide');
 			$("body").removeClass('modal-open');
 			self.init();
 			self.add_after();
@@ -84,8 +90,11 @@ AppEdit.prototype = {
 			$(self.id + ".diary-list .click-item").first().find('.choice-bottom').removeClass("ng-hide");
 			var current = $(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent('.click-item');
 
-			$("#ueditor").animate({scrollTop: 0}, 0);
-			self.set_top(current);
+			if($("#ueditor").scrollTop() != 0) {
+				$("#ueditor").animate({scrollTop: 0}, 1000,function() {self.set_top(current);});
+			} else {
+				self.set_top(current);
+			}
 		});
 
 
@@ -99,15 +108,30 @@ AppEdit.prototype = {
 			var length = this.files.length;
 			if(!current || current == undefined) {
 				current = obj = $(self.id + ".click-item .choice-bottom:not(.ng-hide)").parent().parent('.click-item');	
-				$(current).find('.choice-bottom').addClass('ng-hide');	
   			}		
+
+  			var current_inx;
+  			$(self.id + ".click-item").each(function(inx,el) {
+  				if($(this).is(current)) current_inx = inx;
+  			});
 			
+			var html = self.itemstart + " image-model-wrapper " + self.itemstart_append + "<div class='img-loading'><img src=https://s.geilicdn.com/CPC/item/201709/images/loading.50c5e3e7.gif></div>" + self.itemend;
 			for (var i = 0; i < length; i++) {
-				$(current).after(self.itemstart + " image-model-wrapper " + self.itemstart_append + "<div class='img-loading'><img src=https://s.geilicdn.com/CPC/item/201709/images/loading.50c5e3e7.gif></div>" + self.itemend);
+
+				if(  $(self.id + ".choice-tips:not(.ng-hide)").is($(self.id +".choice-tips").eq(0)) && !$(self.id + ".choice-tips").eq(0).parent().find('textarea').length && !$(self.id + ".choice-tips").eq(0).parent().find('img').length ) {
+					$(current).replaceWith(html);
+					
+					current = $(self.id + ".click-item").eq(current_inx);
+					$(current).find(".choice-bottom").addClass("ng-hide");
+				} else {
+					$(current).find(".choice-bottom").addClass("ng-hide");
+					$(current).after(html);
+					current = $(current).next();
+				}
+
 				self.init();
 				self.add_after();
-				current = $(current).next();
-
+				
 				self.info.imageupload != undefined  ? self.info.imageupload(this.files[i],current) : self.showImage(this.files[i],current); 
 			}
 
@@ -167,7 +191,7 @@ AppEdit.prototype = {
 			} else if(confirm("是否删除该模块")) 
 				$(this).parent().parent().parent().parent('.click-item').remove();
 
-			if($(".click-item").length <= 0) {$('.empty-content').removeClass('ng-hide');}
+			if($(self.id + ".click-item").length <= 0) {$(self.id + '.empty-content').removeClass('ng-hide');}
 			self.add_after();
 		});
 		
@@ -306,18 +330,26 @@ AppEdit.prototype = {
 			var top = 0;
 			$(self.id + ".click-item").each(function() {
 				top += $(this).outerHeight();
+				self.log(top);
 				has++;
 				if($(this).is(current)) {
 				   return false;	
 				}
 			});
 		} 
+		var offsettop=0;
+		if(self.info.offset.top != undefined) {
+			offsettop = parseFloat(self.info.offset.top);
+		}
+		
 		if($(self.id + ".click-item").length == has) 
-			$("#ueditor").animate({scrollTop: top}, 0);
+			$(self.id + "#ueditor").animate({scrollTop: top}, 0);
+		top = top - $(self.id + "#ueditor").scrollTop();
+		top -= $(self.id+".click-item .choice-bottom:not(.ng-hide)").outerHeight() / 2 + 20;
+		top = (top + $(self.id).offset().top - offsettop - $(window).scrollTop());
 
-		top = top - $("#ueditor").scrollTop();
-		top -= 60;
-		$(self.id + ".bars-box-justify").attr('style',"top: " + top + "px;left: " + ($("#ueditor").offset().left + $("#ueditor").outerWidth() + 21) + "px;");
+		console.log($(self.id).offset().top);
+		$(self.id + ".bars-box-justify").attr('style',"top: " + top + "px;left: " + ($(self.id + "#ueditor").offset().left + $("#ueditor").outerWidth() + 21) + "px;");
 	},		
 	add_after : function() {
 		var self = this;
@@ -349,7 +381,7 @@ AppEdit.prototype = {
 
 		});
 		
-		$(".move-up").mousedown(function() {
+		$(self.id + ".move-up").mousedown(function() {
 			var current = $(this).parent().parent().parent().parent('.click-item');
 			var prev = $(current).prev(".click-item");
 			$(prev).insertAfter(current);
