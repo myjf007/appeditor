@@ -201,7 +201,10 @@ AppEdit.prototype = {
 			} else if(confirm("是否删除该模块")) 
 				$(this).parent().parent().parent().parent('.click-item').remove();
 
-			if($(self.id + ".click-item").length <= 0) {$(self.id + '.empty-content').removeClass('ng-hide');}
+			if($(self.id + ".click-item").length <= 0) {
+				$(self.id + '.empty-content').removeClass('ng-hide');
+				$(self.id + '.empty-content').append("<input name='" + self.name + "' type='hidden'/>")
+			}
 			self.add_after();
 		});
 		
@@ -249,7 +252,10 @@ AppEdit.prototype = {
 			self.removeUnScroll();
 		});
 
-		if(data.length <= 0) {$(self.id + '.empty-content').removeClass('ng-hide');}	
+		if(data.length <= 0) {
+			$(self.id + '.empty-content').removeClass('ng-hide');
+			$(self.id + '.empty-content').append("<input name='" + self.name + "' type='hidden'/>")
+		}	
     },
     showImage : function(file,current) {
     	var self = this;
