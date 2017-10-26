@@ -83,6 +83,7 @@ AppEdit.prototype = {
 			$(this).after("<div class='mark addModulesBars'></div>");
 			$(self.id + '.bars-box').removeClass('ng-hide');
 			$(self.id + '.empty-content').addClass('ng-hide');
+			$(self.id + '.empty-content input').remove();
 
 			var append = self.itemstart + " text-model-wrapper " + self.itemstart_append +  self.itemend;
 
@@ -201,7 +202,7 @@ AppEdit.prototype = {
 			} else if(confirm("是否删除该模块")) 
 				$(this).parent().parent().parent().parent('.click-item').remove();
 
-			if($(self.id + ".click-item").length <= 0) {
+			if($(self.id + ".click-item input").length <= 0) {
 				$(self.id + '.empty-content').removeClass('ng-hide');
 				$(self.id + '.empty-content').append("<input name='" + self.name + "' type='hidden'/>")
 			}
@@ -209,11 +210,16 @@ AppEdit.prototype = {
 		});
 		
 		$(self.id + ".bars-box-back").mousedown(function() {
-			$(".click-item .choice-bottom:not(.ng-hide)").addClass('ng-hide');
-			$(".addModulesBars").addClass('ng-hide');
-			$('.bars-box').addClass('ng-hide');
+			$(self.id + ".click-item .choice-bottom:not(.ng-hide)").addClass('ng-hide');
+			$(self.id + ".addModulesBars").addClass('ng-hide');
+			$(self.id + '.bars-box').addClass('ng-hide');
 			
 			$("body").removeClass('modal-open');
+
+			if($(self.id + ".click-item input").length <= 0) {
+				$(self.id + '.empty-content').removeClass('ng-hide');
+				$(self.id + '.empty-content').append("<input name='" + self.name + "' type='hidden'/>")
+			}
 		});
 		
 		$(self.id + ".textarea").removeClass('txt-show-area');
@@ -233,8 +239,9 @@ AppEdit.prototype = {
 			var current = $(this).parent().parent().parent().parent('.click-item');
 			$("body").addClass('modal-open');
 			$(this).after("<div class='mark addModulesBars'></div>");
-			$('.bars-box').removeClass('ng-hide');
-			$('.empty-content').addClass('ng-hide');
+			$(self.id + '.bars-box').removeClass('ng-hide');
+			$(self.id + '.empty-content').addClass('ng-hide');
+			$(self.id + '.empty-content input').remove();
 
 			$(current).find('.choice-tips').removeClass('ng-hide');
 			
@@ -332,9 +339,12 @@ AppEdit.prototype = {
 			} else if(confirm("是否删除该模块")) 
 				$(this).parent().parent().parent().parent('.click-item').remove();
 			
+			if($(self.id + ".click-item input").length <= 0) {
+				$(self.id + '.empty-content').removeClass('ng-hide');
+				$(self.id + '.empty-content').append("<input name='" + self.name + "' type='hidden'/>")
+			}
 			self.init();
 			self.add_after();
-			if($(self.id + ".click-item").length <= 0) {$('.empty-content').removeClass('ng-hide');}
 		});
 		
 		
@@ -358,7 +368,7 @@ AppEdit.prototype = {
 			offsettop = parseFloat(self.info.offset.top);
 		}
 		
-		if($(self.id + ".click-item").length == has) 
+		if($(self.id + ".click-item input").length == has) 
 			$(self.id + "#ueditor").animate({scrollTop: top}, 0);
 		top = top - $(self.id + "#ueditor").scrollTop();
 		top -= $(self.id+".click-item .choice-bottom:not(.ng-hide)").outerHeight() / 2 + 20;
@@ -414,7 +424,7 @@ AppEdit.prototype = {
 			$(this).after("<div class='mark addModulesBars'></div>");
 			$(self.id + '.bars-box').removeClass('ng-hide');
 			$(self.id + '.empty-content').addClass('ng-hide');
-			
+			$(self.id + '.empty-content input').remove();
 			
 			$(current).find('.choice-tips').removeClass('ng-hide');
 			//var append = self.itemstart + " text-model-wrapper " + self.itemstart_append + "<div class='choice-tips choice-bottom'  ></div>" +  self.itemend;
